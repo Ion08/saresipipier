@@ -223,7 +223,7 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {items.map((p) => (
                       <div key={p.$id} className="group border-3 border-piper">
-                        <div className="relative aspect-square w-full overflow-hidden bg-sare-muted cursor-pointer"
+                        <div className="relative aspect-square w-full overflow-hidden bg-sare-muted cursor-pointer image-zoom"
                           onClick={() => setSelectedProduct({ product: p, categoryName: category.name })}
                         >
                           {!imgLoaded[p.$id] && (
@@ -258,7 +258,7 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
                             className="absolute bottom-3 right-3 w-9 h-9 border-[2px] border-piper bg-sare flex items-center justify-center hover:bg-piper"
                             aria-label={`Adaugă ${p.name} în coș`}
                           >
-                            <Plus size={16} className="text-piper group-hover:text-sare" />
+                            <Plus size={16} className="text-piper hover:text-sare" />
                           </button>
                         </div>
                         <div
@@ -356,7 +356,7 @@ function ProductModal({
           <X size={20} />
         </button>
 
-        <div className="relative w-full aspect-[4/3] overflow-hidden bg-sare-muted">
+        <div className="relative w-full aspect-[4/3] overflow-hidden bg-sare-muted image-zoom">
           {!modalImgLoaded && (
             <div className="absolute inset-0 z-0 animate-pulse bg-sare-muted" />
           )}

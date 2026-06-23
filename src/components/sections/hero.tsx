@@ -67,7 +67,7 @@ export default function Hero({ products = [] }: HeroProps) {
             className="lg:col-span-5 relative"
           >
             <div className="relative">
-              <div className="aspect-square max-w-md mx-auto border-3 border-black overflow-hidden">
+              <div className="aspect-square max-w-md mx-auto border-3 border-black image-zoom">
                 <Image
                   src={heroImage}
                   alt="Preparat Sare și Piper"

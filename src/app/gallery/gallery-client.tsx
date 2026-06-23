@@ -128,6 +128,7 @@ export default function GalleryClient({ items }: GalleryClientProps) {
                         height={Math.floor(300 + Math.random() * 300)}
                         className="w-full"
                         containerClassName=""
+                        imageZoom
                       />
                       {(item.title || item.description) && (
                         <div className="absolute inset-0 bg-piper/60 opacity-0 group-hover:opacity-100 flex items-end p-4">

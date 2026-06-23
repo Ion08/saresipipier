@@ -78,6 +78,7 @@ export default function Testimonials({ testimonials = [] }: TestimonialsProps) {
                       alt={testimonial.name}
                       fill
                       className="object-cover"
+                      imageZoom
                     />
                   </div>
                   <div className="min-w-0">

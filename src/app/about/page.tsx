@@ -35,7 +35,7 @@ export default function AboutPage() {
             <div className="md:col-span-5 border-3 border-black overflow-hidden">
               <ImageWithFallback
                 src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800&q=80"
-                alt="Sare și Piper" width={500} height={500} className="w-full h-full object-cover"
+                alt="Sare și Piper" width={500} height={500} className="w-full h-full object-cover" imageZoom
               />
             </div>
           </div>

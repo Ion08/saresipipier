@@ -43,7 +43,7 @@ export default function FeaturedDishes({ products = [] }: FeaturedDishesProps) {
           {items.map((p) => (
             <div key={p.$id} className="border-3 border-piper bg-sare">
               <div className="aspect-[4/3] overflow-hidden">
-                <ImageWithFallback src={getImage(p)} alt={p.name} width={400} height={300} className="w-full h-full object-cover" containerClassName="w-full h-full" />
+                <ImageWithFallback src={getImage(p)} alt={p.name} width={400} height={300} className="w-full h-full object-cover" containerClassName="w-full h-full" imageZoom />
               </div>
               <div className="p-3 md:p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">
