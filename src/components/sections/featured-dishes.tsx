@@ -55,7 +55,7 @@ export default function FeaturedDishes({ products = [] }: FeaturedDishesProps) {
                     e.stopPropagation();
                     handleAdd(p);
                   }}
-                  className="absolute bottom-3 right-3 w-9 h-9 border-[2px] border-piper bg-sare flex items-center justify-center hover:bg-piper group-hover:bg-piper"
+                  className="absolute bottom-3 right-3 w-9 h-9 border-[2px] border-piper bg-sare flex items-center justify-center hover:bg-piper group-hover:bg-piper group-hover:border-sare"
                   aria-label={`Adaugă ${p.name} în coș`}
                 >
                   <Plus size={16} className="text-piper group-hover:text-sare" />
