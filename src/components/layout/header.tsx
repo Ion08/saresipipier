@@ -63,8 +63,7 @@ export default function Header() {
     <>
       <header
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 bg-white transition-transform duration-200",
-          isMenuPage ? "border-b-0" : "border-b-3 border-black",
+          "fixed top-0 left-0 right-0 z-50 bg-white border-b-3 border-black transition-transform duration-200",
           hidden && "-translate-y-full"
         )}
       >

@@ -156,7 +156,7 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
         </div>
       </section>
 
-      <section className={cn("sticky z-30 bg-sare border-b-3 border-piper", headerHidden ? "top-0" : "top-16 md:top-20")}>
+      <section className="fixed top-16 md:top-20 left-0 right-0 z-30 bg-sare border-b-3 border-piper">
         <div className="container-custom px-4 md:px-6 py-2 md:py-3">
           {searchOpen ? (
             <div className="relative max-w-md mx-auto">
@@ -201,7 +201,7 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
         </div>
       </section>
 
-      <section className="bg-sare py-16 md:py-24">
+      <section className="bg-sare pt-32 md:pt-40 pb-16 md:pb-24">
         <div className="container-custom px-4 md:px-6">
           {groupedProducts.length === 0 ? (
             <div className="text-center py-24">
