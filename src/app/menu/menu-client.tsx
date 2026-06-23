@@ -174,7 +174,14 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
               </button>
             </div>
           ) : (
-            <div className="flex items-center justify-center gap-1 flex-wrap">
+            <div className="flex items-center gap-1 flex-wrap">
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="flex items-center justify-center w-8 h-8 border-[2px] border-piper text-piper hover:bg-piper hover:text-sare shrink-0"
+                aria-label="Caută preparat"
+              >
+                <Search size={15} />
+              </button>
               {sortedCategories.map((cat) => (
                 <button
                   key={cat.$id}
@@ -189,13 +196,6 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
                   {cat.name}
                 </button>
               ))}
-              <button
-                onClick={() => setSearchOpen(true)}
-                className="ml-auto flex items-center justify-center w-8 h-8 border-[2px] border-piper text-piper hover:bg-piper hover:text-sare"
-                aria-label="Caută preparat"
-              >
-                <Search size={15} />
-              </button>
             </div>
           )}
         </div>
