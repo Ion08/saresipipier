@@ -41,7 +41,6 @@ export default function GalleryPreview({ images = [] }: GalleryPreviewProps) {
                   src={getOptimizedImageUrl(first.image, 800)}
                   alt={first.title || "Galerie"}
                   fill
-                  imageZoom
                   className="object-cover"
                 />
               </div>
@@ -59,7 +58,6 @@ export default function GalleryPreview({ images = [] }: GalleryPreviewProps) {
                   src={getOptimizedImageUrl(item.image, 600)}
                   alt={item.title || "Galerie"}
                   fill
-                  imageZoom
                   className="object-cover"
                 />
               </div>
