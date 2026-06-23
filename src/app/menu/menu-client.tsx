@@ -25,6 +25,7 @@ function getProductImage(p: Product, categoryName: string): string {
 export default function MenuClient({ categories, products }: MenuClientProps) {
   const { addItem, setCartOpen } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchOpen, setSearchOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
   const [selectedProduct, setSelectedProduct] = useState<{ product: Product; categoryName: string } | null>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
@@ -156,38 +157,47 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
       </section>
 
       <section className={cn("sticky z-30 bg-sare border-b-3 border-piper", headerHidden ? "top-0" : "top-16 md:top-20")}>
-        <div className="container-custom px-4 md:px-6 py-4">
-          <div className="relative max-w-md mx-auto mb-3">
-            <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-cenere pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Caută preparat..."
-              className="w-full border-[2px] border-piper bg-sare pl-11 pr-10 py-2.5 text-sm text-piper placeholder:text-cenere/60 focus:outline-none focus:border-rosso"
-            />
-            {searchQuery && (
-              <button onClick={() => setSearchQuery("")} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-cenere hover:text-piper">
+        <div className="container-custom px-4 md:px-6 py-2 md:py-3">
+          {searchOpen ? (
+            <div className="relative max-w-md mx-auto">
+              <Search size={17} className="absolute left-4 top-1/2 -translate-y-1/2 text-cenere pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Caută preparat..."
+                autoFocus
+                className="w-full border-[2px] border-piper bg-sare pl-11 pr-10 py-2 text-sm text-piper placeholder:text-cenere/60 focus:outline-none focus:border-rosso"
+              />
+              <button onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-cenere hover:text-piper">
                 <X size={15} />
               </button>
-            )}
-          </div>
-          <div className="flex items-center justify-center gap-1 flex-wrap">
-            {sortedCategories.map((cat) => (
+            </div>
+          ) : (
+            <div className="flex items-center justify-center gap-1 flex-wrap">
+              {sortedCategories.map((cat) => (
+                <button
+                  key={cat.$id}
+                  onClick={() => scrollToCategory(cat.slug)}
+                  className={cn(
+                    "px-3 py-1.5 text-xs font-bold uppercase tracking-wider whitespace-nowrap border-[2px]",
+                    activeSection === cat.slug
+                      ? "bg-rosso text-sare border-rosso"
+                      : "border-piper text-piper/60 hover:text-piper hover:bg-piper/5"
+                  )}
+                >
+                  {cat.name}
+                </button>
+              ))}
               <button
-                key={cat.$id}
-                onClick={() => scrollToCategory(cat.slug)}
-                className={cn(
-                  "px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider whitespace-nowrap border-[2px]",
-                  activeSection === cat.slug
-                    ? "bg-rosso text-sare border-rosso"
-                    : "border-piper text-piper/60 hover:text-piper hover:bg-piper/5"
-                )}
+                onClick={() => setSearchOpen(true)}
+                className="ml-auto flex items-center justify-center w-8 h-8 border-[2px] border-piper text-piper hover:bg-piper hover:text-sare"
+                aria-label="Caută preparat"
               >
-                {cat.name}
+                <Search size={15} />
               </button>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
