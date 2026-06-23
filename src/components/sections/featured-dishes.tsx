@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShoppingBag } from "lucide-react";
+import { Plus } from "lucide-react";
 import { ImageWithFallback } from "@/components/ui/image-with-fallback";
 import { formatPrice } from "@/lib/utils";
 import { getFoodImage } from "@/lib/food-images";
@@ -39,25 +39,42 @@ export default function FeaturedDishes({ products = [] }: FeaturedDishesProps) {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
           {items.map((p) => (
-            <div key={p.$id} className="border-3 border-piper bg-sare">
-              <div className="aspect-[4/3] overflow-hidden">
-                <ImageWithFallback src={getImage(p)} alt={p.name} width={400} height={300} className="w-full h-full object-cover" containerClassName="w-full h-full" imageZoom />
-              </div>
-              <div className="p-3 md:p-4">
-                <div className="flex items-start justify-between gap-2 mb-2">
-                  <h3 className="font-display text-sm md:text-base text-piper uppercase tracking-wide leading-tight">{p.name}</h3>
-                  <span className="font-display text-base md:text-lg text-rosso shrink-0">{formatPrice(p.price)}</span>
-                </div>
-                {p.weight && <p className="text-verde text-[10px] uppercase tracking-wide font-bold mb-3">{p.weight}</p>}
+            <div key={p.$id} className="group border-3 border-piper">
+              <div className="relative aspect-square w-full overflow-hidden bg-sare-muted image-zoom">
+                <ImageWithFallback
+                  src={getImage(p)}
+                  alt={p.name}
+                  fill
+                  className="object-cover"
+                  containerClassName=""
+                  imageZoom
+                />
+                {p.new && (
+                  <span className="absolute top-3 left-3 z-10 border-[2px] border-verde text-verde font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 bg-sare">Nou</span>
+                )}
                 <button
-                  onClick={() => handleAdd(p)}
-                  className="w-full flex items-center justify-center gap-2 border-3 border-piper py-2 text-xs font-bold uppercase tracking-wider text-piper hover:bg-piper hover:text-sare"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAdd(p);
+                  }}
+                  className="absolute bottom-3 right-3 w-9 h-9 border-[2px] border-piper bg-sare flex items-center justify-center hover:bg-piper group-hover:bg-piper"
+                  aria-label={`Adaugă ${p.name} în coș`}
                 >
-                  <ShoppingBag size={14} />
-                  Adaugă
+                  <Plus size={16} className="text-piper group-hover:text-sare" />
                 </button>
+              </div>
+              <div className="p-3">
+                <h3 className="font-display text-sm md:text-lg text-piper uppercase tracking-wide leading-tight">
+                  {p.name}
+                </h3>
+                <div className="mt-2 flex items-center justify-between">
+                  {p.weight && (
+                    <span className="text-verde text-xs uppercase tracking-wide font-bold">{p.weight}</span>
+                  )}
+                  <span className="font-display text-lg md:text-xl text-rosso ml-auto">{formatPrice(p.price)}</span>
+                </div>
               </div>
             </div>
           ))}
