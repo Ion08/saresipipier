@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { ShoppingBag } from "lucide-react";
+import { ImageWithFallback } from "@/components/ui/image-with-fallback";
 import { formatPrice } from "@/lib/utils";
 import { getFoodImage } from "@/lib/food-images";
 import { getOptimizedImageUrl } from "@/lib/utils";
@@ -42,8 +42,8 @@ export default function FeaturedDishes({ products = [] }: FeaturedDishesProps) {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {items.map((p) => (
             <div key={p.$id} className="border-3 border-piper bg-sare">
-              <div className="aspect-[4/3] overflow-hidden bg-sare-muted">
-                <Image src={getImage(p)} alt={p.name} width={400} height={300} className="w-full h-full object-cover" />
+              <div className="aspect-[4/3] overflow-hidden">
+                <ImageWithFallback src={getImage(p)} alt={p.name} width={400} height={300} className="w-full h-full object-cover" containerClassName="w-full h-full" />
               </div>
               <div className="p-3 md:p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">

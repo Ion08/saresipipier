@@ -182,7 +182,7 @@ function VideoCard({ item }: { item: GalleryItem }) {
     <button onClick={() => setPlaying(true)}
       className="group relative w-full cursor-pointer text-left border-3 border-black bg-black"
       style={{ aspectRatio: "16/9" }}>
-      {thumb && <img src={thumb} alt={item.title || "Video Sare și Piper"} className="absolute inset-0 w-full h-full object-cover" />}
+      {thumb && <img src={thumb} alt={item.title || "Video Sare și Piper"} className="absolute inset-0 w-full h-full object-cover" loading="lazy" />}
       <div className="absolute inset-0 bg-black/30 flex items-center justify-center group-hover:bg-black/50">
         <div className="w-16 h-16 border-3 border-white bg-black/50 flex items-center justify-center">
           <Play size={28} className="text-white ml-1" />

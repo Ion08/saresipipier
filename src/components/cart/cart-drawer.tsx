@@ -68,7 +68,7 @@ export default function CartDrawer() {
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-3 border-b-[2px] border-piper pb-4">
                       <div className="relative w-16 h-16 shrink-0 border-[2px] border-piper overflow-hidden bg-sare-muted">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="64px" />
+                        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="64px" loading="lazy" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">

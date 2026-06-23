@@ -221,6 +221,7 @@ export default function AdminGalleryPage() {
                       src={getImagePreview(item.image)}
                       alt={item.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      loading="lazy"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
@@ -330,6 +331,7 @@ export default function AdminGalleryPage() {
                     src={imagePreview}
                     alt="Preview"
                     className="w-40 h-32 object-cover  border border-black/20"
+                    loading="lazy"
                   />
                   <button
                     type="button"

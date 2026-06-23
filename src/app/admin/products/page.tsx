@@ -344,6 +344,7 @@ export default function AdminProductsPage() {
                                   src={getImagePreview(product.image, 80)}
                                   alt={product.name}
                                   className="w-full h-full object-cover"
+                                  loading="lazy"
                                 />
                               ) : (
                                 <UtensilsCrossed
@@ -553,6 +554,7 @@ export default function AdminProductsPage() {
                     src={imagePreview}
                     alt="Preview"
                     className="w-32 h-32 object-cover  border border-bordo"
+                    loading="lazy"
                   />
                   <button
                     type="button"

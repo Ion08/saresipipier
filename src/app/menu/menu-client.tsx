@@ -28,6 +28,7 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
   const [activeSection, setActiveSection] = useState<string>("");
   const [selectedProduct, setSelectedProduct] = useState<{ product: Product; categoryName: string } | null>(null);
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
+  const [imgLoaded, setImgLoaded] = useState<Record<string, boolean>>({});
   const [headerHidden, setHeaderHidden] = useState(false);
   const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -225,16 +226,21 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
                         <div className="relative aspect-square w-full overflow-hidden bg-sare-muted cursor-pointer"
                           onClick={() => setSelectedProduct({ product: p, categoryName: category.name })}
                         >
+                          {!imgLoaded[p.$id] && (
+                            <div className="absolute inset-0 z-0 animate-pulse bg-sare-muted" />
+                          )}
                           <Image
                             src={imgErrors[p.$id] ? getFoodImage(p.name, category.name) : getProductImage(p, category.name)}
                             alt={p.name}
                             fill
-                            className="object-cover"
+                            className={cn("object-cover transition-opacity duration-500", imgLoaded[p.$id] ? "opacity-100" : "opacity-0")}
                             sizes="(max-width: 640px) 50vw, 33vw"
+                            loading="lazy"
+                            onLoad={() => setImgLoaded((prev) => ({ ...prev, [p.$id]: true }))}
                             onError={() => handleImgError(p.$id)}
                           />
                           {p.new && (
-                            <span className="absolute top-3 left-3 border-[2px] border-verde text-verde font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 bg-sare">Nou</span>
+                            <span className="absolute top-3 left-3 z-10 border-[2px] border-verde text-verde font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 bg-sare">Nou</span>
                           )}
                           <button
                             onClick={(e) => {
@@ -309,6 +315,7 @@ function ProductModal({
 }) {
   const { addItem, setCartOpen } = useCart();
   const [qty, setQty] = useState(1);
+  const [modalImgLoaded, setModalImgLoaded] = useState(false);
 
   const imgSrc = imgError
     ? getFoodImage(product.name, categoryName)
@@ -350,8 +357,11 @@ function ProductModal({
         </button>
 
         <div className="relative w-full aspect-[4/3] overflow-hidden bg-sare-muted">
-          <Image src={imgSrc} alt={product.name} fill className="object-cover" sizes="(max-width: 768px) 100vw, 672px" onError={() => onImgError(product.$id)} />
-          {product.new && <span className="absolute top-4 left-4 border-[2px] border-verde text-verde font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 bg-sare">Nou</span>}
+          {!modalImgLoaded && (
+            <div className="absolute inset-0 z-0 animate-pulse bg-sare-muted" />
+          )}
+          <Image src={imgSrc} alt={product.name} fill className={cn("object-cover transition-opacity duration-500", modalImgLoaded ? "opacity-100" : "opacity-0")} sizes="(max-width: 768px) 100vw, 672px" loading="lazy" onLoad={() => setModalImgLoaded(true)} onError={() => onImgError(product.$id)} />
+          {product.new && <span className="absolute top-4 left-4 z-10 border-[2px] border-verde text-verde font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 bg-sare">Nou</span>}
         </div>
 
         <div className="p-6 md:p-8">

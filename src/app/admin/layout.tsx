@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { cookies, headers } from "next/headers";
-import { env } from "@/lib/env";
+import { headers } from "next/headers";
+import { requireAdmin } from "@/lib/admin-auth";
 import AdminLayoutClient from "@/components/layout/admin-layout";
 
 export const dynamic = "force-dynamic";
@@ -18,23 +18,7 @@ export default async function AdminLayout({
   }
 
   if (pathname && !pathname.startsWith("/admin/login")) {
-    const cookieStore = await cookies();
-    const cookieHeader = cookieStore.toString();
-
-    try {
-      const res = await fetch(`${env.appwrite.endpoint}/account`, {
-        headers: {
-          "X-Appwrite-Project": env.appwrite.projectId,
-          Cookie: cookieHeader,
-        },
-        cache: "no-store",
-      });
-      if (!res.ok) {
-        redirect("/admin/login");
-      }
-    } catch {
-      redirect("/admin/login");
-    }
+    await requireAdmin();
   }
 
   if (pathname.startsWith("/admin/login")) {

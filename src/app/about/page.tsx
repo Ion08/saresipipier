@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Phone } from "lucide-react";
 import PageLayout from "@/components/layout/page-layout";
+import { ImageWithFallback } from "@/components/ui/image-with-fallback";
 
 export const metadata: Metadata = {
   title: "Despre",
@@ -33,7 +33,7 @@ export default function AboutPage() {
               <p className="font-bold text-sm uppercase tracking-wider text-rosso mt-4">Și a mers.</p>
             </div>
             <div className="md:col-span-5 border-3 border-black overflow-hidden">
-              <Image
+              <ImageWithFallback
                 src="https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?w=800&q=80"
                 alt="Sare și Piper" width={500} height={500} className="w-full h-full object-cover"
               />

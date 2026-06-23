@@ -198,6 +198,7 @@ export default function AdminHomepagePage() {
                       src={heroPreview}
                       alt="Hero preview"
                       className="w-full max-w-md h-40 object-cover  border border-bordo"
+                      loading="lazy"
                     />
                     <button
                       type="button"
@@ -253,6 +254,7 @@ export default function AdminHomepagePage() {
                       src={aboutPreview}
                       alt="About preview"
                       className="w-full max-w-md h-40 object-cover  border border-bordo"
+                      loading="lazy"
                     />
                     <button
                       type="button"

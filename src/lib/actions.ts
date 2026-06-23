@@ -9,8 +9,9 @@ import {
   adminDeleteDocument,
   adminUploadFile,
   adminDeleteFile,
-  getAccount,
 } from "./appwrite";
+import { setAdminSession, clearAdminSession } from "./admin-auth";
+import { env } from "./env";
 import { COLLECTIONS } from "./collections";
 import {
   reservationSchema,
@@ -27,38 +28,21 @@ import {
 // Auth
 export async function loginAdmin(data: z.infer<typeof loginSchema>) {
   const parsed = loginSchema.parse(data);
-  const account = getAccount();
 
-  try {
-    const session = await account.createEmailPasswordSession(
-      parsed.email,
-      parsed.password
-    );
-    return { success: true, session };
-  } catch {
-    return { success: false, error: "Invalid email or password" };
+  if (
+    parsed.email === env.admin.email &&
+    parsed.password === env.admin.password
+  ) {
+    await setAdminSession();
+    return { success: true };
   }
+
+  return { success: false, error: "Email sau parolă incorecte" };
 }
 
 export async function logoutAdmin() {
-  const account = getAccount();
-  try {
-    await account.deleteSession("current");
-    return { success: true };
-  } catch {
-    return { success: false, error: "Failed to logout" };
-  }
-}
-
-export async function getAdminSession() {
-  const account = getAccount();
-  try {
-    const session = await account.getSession("current");
-    const user = await account.get();
-    return { session, user };
-  } catch {
-    return null;
-  }
+  await clearAdminSession();
+  return { success: true };
 }
 
 // Categories
