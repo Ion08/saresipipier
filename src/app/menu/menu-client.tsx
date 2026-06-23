@@ -222,8 +222,8 @@ export default function MenuClient({ categories, products }: MenuClientProps) {
                   </div>
                   <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                     {items.map((p) => (
-                      <div key={p.$id} className="group border-3 border-piper">
-                        <div className="relative aspect-square w-full overflow-hidden bg-sare-muted cursor-pointer image-zoom"
+                      <div key={p.$id} className="group border-3 border-piper image-zoom">
+                        <div className="relative aspect-square w-full overflow-hidden bg-sare-muted cursor-pointer"
                           onClick={() => setSelectedProduct({ product: p, categoryName: category.name })}
                         >
                           {!imgLoaded[p.$id] && (
