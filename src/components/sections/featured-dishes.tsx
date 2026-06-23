@@ -34,9 +34,6 @@ export default function FeaturedDishes({ products = [] }: FeaturedDishesProps) {
       <div className="container-custom px-4 md:px-6">
         <div className="mb-10">
           <h2 className="text-4xl md:text-6xl text-piper">Recomandări</h2>
-          <p className="text-piper-muted text-sm mt-2 font-bold uppercase tracking-wider max-w-md">
-            Recomandările noastre
-          </p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
@@ -48,7 +45,7 @@ export default function FeaturedDishes({ products = [] }: FeaturedDishesProps) {
                   alt={p.name}
                   fill
                   className="object-cover"
-                  containerClassName=""
+                  containerClassName="h-full w-full"
                 />
                 {p.new && (
                   <span className="absolute top-3 left-3 z-10 border-[2px] border-verde text-verde font-bold text-[10px] uppercase tracking-widest px-2 py-0.5 bg-sare">Nou</span>
