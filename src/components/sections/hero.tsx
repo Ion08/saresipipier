@@ -8,43 +8,52 @@ import { Wordmark } from "@/components/wordmark";
 import { getOptimizedImageUrl } from "@/lib/utils";
 import type { GalleryItem } from "@/lib/types";
 
-function resolveImageUrl(image: string): string {
-  if (!image) return "";
-  if (image.startsWith("http")) return image;
-  return getOptimizedImageUrl(image, 800);
+interface Slide {
+  src: string;
+  title: string;
+  description: string;
 }
+
+function toSlide(item: GalleryItem): Slide {
+  const image = item.image || "";
+  return {
+    src: image.startsWith("http") ? image : getOptimizedImageUrl(image, 800),
+    title: item.title || "",
+    description: item.description || "",
+  };
+}
+
+const FALLBACK_SLIDE: Slide = {
+  src: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=800&fit=crop",
+  title: "Sare și Piper",
+  description: "",
+};
 
 interface HeroProps {
   gallery?: GalleryItem[];
 }
 
 export default function Hero({ gallery = [] }: HeroProps) {
-  const images = gallery
-    .filter((item) => item.image)
-    .map((item) => resolveImageUrl(item.image));
-
-  if (images.length === 0) {
-    images.push(
-      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=800&fit=crop"
-    );
-  }
+  const slides: Slide[] = gallery.filter((item) => item.image).map(toSlide);
+  if (slides.length === 0) slides.push(FALLBACK_SLIDE);
 
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const dragStartRef = useRef(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % images.length), [images.length]);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + images.length) % images.length), [images.length]);
+  const next = useCallback(() => setCurrent((c) => (c + 1) % slides.length), [slides.length]);
+  const prev = useCallback(() => setCurrent((c) => (c - 1 + slides.length) % slides.length), [slides.length]);
 
   useEffect(() => {
-    if (images.length <= 1 || isPaused || isDragging) return;
+    if (slides.length <= 1 || isPaused || isDragging) return;
     const timer = setInterval(next, 4000);
     return () => clearInterval(timer);
-  }, [next, images.length, isPaused, isDragging]);
+  }, [next, slides.length, isPaused, isDragging]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -156,24 +165,47 @@ export default function Hero({ gallery = [] }: HeroProps) {
                   style={{
                     transform: `translateX(${translateX}px)`,
                     transition: isDragging ? "none" : "transform 0.4s ease",
-                    width: `${images.length * 100}%`,
+                    width: `${slides.length * 100}%`,
                   }}
                 >
-                  {images.map((src, i) => (
+                  {slides.map((slide, i) => (
                     <div
                       key={i}
-                      className="flex-shrink-0"
-                      style={{ width: `${100 / images.length}%` }}
+                      className="flex-shrink-0 relative overflow-hidden"
+                      style={{ width: `${100 / slides.length}%` }}
+                      onMouseEnter={() => setHoveredIndex(i)}
+                      onMouseLeave={() => setHoveredIndex(null)}
                     >
                       <Image
-                        src={src}
-                        alt={`Galerie Sare și Piper ${i + 1}`}
+                        src={slide.src}
+                        alt={slide.title || `Galerie Sare și Piper ${i + 1}`}
                         width={600}
                         height={600}
                         className="w-full h-full object-cover"
                         priority={i === 0}
                         draggable={false}
                       />
+                      {(slide.title || slide.description) && (
+                        <div
+                          className="absolute inset-0 transition-opacity duration-300"
+                          style={{
+                            opacity: hoveredIndex === i ? 1 : 0,
+                            background:
+                              "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
+                          }}
+                        >
+                          <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+                            {slide.title && (
+                              <p className="font-bold text-sm uppercase tracking-wider">
+                                {slide.title}
+                              </p>
+                            )}
+                            {slide.description && (
+                              <p className="text-xs text-white/80 mt-0.5">{slide.description}</p>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
