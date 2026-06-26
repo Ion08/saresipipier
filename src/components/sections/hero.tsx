@@ -1,20 +1,40 @@
 "use client";
 
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Wordmark } from "@/components/wordmark";
-import { getFoodImage } from "@/lib/food-images";
-import type { Product } from "@/lib/types";
+import { getOptimizedImageUrl } from "@/lib/utils";
+import type { GalleryItem } from "@/lib/types";
 
 interface HeroProps {
-  products?: Product[];
+  gallery?: GalleryItem[];
 }
 
-export default function Hero({ products = [] }: HeroProps) {
-  const heroImage = products[0]
-    ? getFoodImage(products[0].name, "")
-    : "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=800&fit=crop";
+export default function Hero({ gallery = [] }: HeroProps) {
+  const images = gallery
+    .filter((item) => item.image)
+    .map((item) => getOptimizedImageUrl(item.image, 800));
+
+  if (images.length === 0) {
+    images.push(
+      "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=800&fit=crop"
+    );
+  }
+
+  const [current, setCurrent] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const next = useCallback(() => setCurrent((c) => (c + 1) % images.length), [images.length]);
+  const prev = useCallback(() => setCurrent((c) => (c - 1 + images.length) % images.length), [images.length]);
+
+  useEffect(() => {
+    if (images.length <= 1 || isPaused) return;
+    const timer = setInterval(next, 4000);
+    return () => clearInterval(timer);
+  }, [next, images.length, isPaused]);
 
   return (
     <section className="bg-white pt-28 md:pt-32 pb-16 md:pb-20 relative overflow-hidden">
@@ -65,18 +85,54 @@ export default function Hero({ products = [] }: HeroProps) {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.2, delay: 0.15 }}
             className="lg:col-span-5 relative"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
           >
             <div className="relative">
-              <div className="aspect-square max-w-md mx-auto border-3 border-black image-zoom">
-                <Image
-                  src={heroImage}
-                  alt="Preparat Sare și Piper"
-                  width={600}
-                  height={600}
-                  className="w-full h-full object-cover"
-                  priority
-                />
+              <div className="aspect-square max-w-md mx-auto border-3 border-black overflow-hidden relative">
+                {images.map((src, i) => (
+                  <Image
+                    key={i}
+                    src={src}
+                    alt={`Galerie Sare și Piper ${i + 1}`}
+                    width={600}
+                    height={600}
+                    className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${i === current ? "opacity-100" : "opacity-0"}`}
+                    priority={i === 0}
+                  />
+                ))}
               </div>
+
+              {images.length > 1 && (
+                <>
+                  <button
+                    onClick={prev}
+                    className="absolute left-1 top-1/2 -translate-y-1/2 w-9 h-9 border-3 border-black bg-white flex items-center justify-center hover:bg-black hover:text-white"
+                    aria-label="Anterior"
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+                  <button
+                    onClick={next}
+                    className="absolute right-1 top-1/2 -translate-y-1/2 w-9 h-9 border-3 border-black bg-white flex items-center justify-center hover:bg-black hover:text-white"
+                    aria-label="Următor"
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+
+                  <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+                    {images.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrent(i)}
+                        className={`w-2 h-2 border border-black ${i === current ? "bg-black" : "bg-white"}`}
+                        aria-label={`Mergi la imaginea ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+
               <div className="absolute -bottom-2 -left-2 border-3 border-black bg-white w-24 h-24 md:w-28 md:h-28 flex flex-col items-center justify-center">
                 <span className="font-display text-2xl md:text-3xl text-black leading-none">09—21</span>
                 <span className="font-bold text-[10px] text-black/60 uppercase tracking-wider mt-1">zilnic</span>
